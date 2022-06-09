@@ -20,6 +20,7 @@ def get_connection():
 
 @app.get("/api/users")
 def get_users():
+
     conn = get_connection()
     cur = conn.cursor(cursor_factory=extras.RealDictCursor)
 
@@ -34,11 +35,25 @@ def get_users():
 
 @app.get("/api/users/<id>")
 def get_user(id):
-    return "getting user " + str(id)
+
+    conn = get_connection()
+    cur = conn.cursor(cursor_factory=extras.RealDictCursor)
+
+    cur.execute("SELECT * FROM users WHERE id = %s", (id,))
+    user = cur.fetchone()
+
+    cur.close()
+    conn.close()
+
+    if(user is None):
+        return jsonify({"message": "User not found"}), 404
+
+    return jsonify(user)
 
 
 @app.post("/api/users")
 def create_user():
+
     newUser = request.get_json()
     userName = newUser["username"]
     email = newUser["email"]
@@ -46,15 +61,17 @@ def create_user():
 
     conn = get_connection()
     cur = conn.cursor(cursor_factory=extras.RealDictCursor)
+
     cur.execute(
         "INSERT INTO users (username, email, password) VALUES (%s, %s, %s) RETURNING *", (
             userName, email, password),
     )
     newCreatedUser = cur.fetchone()
-
     conn.commit()
+
     cur.close()
     conn.close()
+
     return jsonify(newCreatedUser)
 
 
