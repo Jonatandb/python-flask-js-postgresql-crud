@@ -27,4 +27,11 @@ DELETE {{API_URL}}/users/6
 
 ###
 
-PUT {{API_URL}}/users/2
+PUT {{API_URL}}/users/7
+Content-Type: application/json
+
+{
+  "username": "John Doe updated",
+  "email": "john_doe@gmail.com",
+  "password": "password123"
+}

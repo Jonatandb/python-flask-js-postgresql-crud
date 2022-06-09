@@ -9,7 +9,7 @@ host = "localhost"
 port = 5432
 dbname = "fazt-postgres-flask-crud"
 user = "postgres"
-password = ""
+password = "root"
 
 
 def get_connection():
@@ -77,6 +77,7 @@ def create_user():
 
 @app.delete("/api/users/<id>")
 def delete_user(id):
+
     conn = get_connection()
     cur = conn.cursor(cursor_factory=extras.RealDictCursor)
 
@@ -95,7 +96,27 @@ def delete_user(id):
 
 @app.put("/api/users/<id>")
 def update_user(id):
-    return "updating user " + str(id)
+
+    conn = get_connection()
+    cur = conn.cursor(cursor_factory=extras.RealDictCursor)
+
+    newUser = request.get_json()
+    userName = newUser["username"]
+    email = newUser["email"]
+    password = Fernet(key).encrypt(bytes(newUser["password"], "utf-8"))
+
+    cur.execute("UPDATE users SET username = %s, email = %s, password = %s WHERE id = %s RETURNING *",
+                (userName, email, password, id))
+    updatedUser = cur.fetchone()
+    conn.commit()
+
+    cur.close()
+    conn.close()
+
+    if(updatedUser is None):
+        return jsonify({"message": "User not found"}), 404
+
+    return jsonify(updatedUser)
 
 
 if __name__ == "__main__":
