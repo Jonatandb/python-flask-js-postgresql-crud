@@ -13,11 +13,12 @@ GET {{API_URL}}/users/1
 ###
 
 POST {{API_URL}}/users
-content-type: 'application/json'
+Content-Type: application/json
 
 {
-  "name": "John Doe",
-  "email": "john_doe@gmail.com"
+  "username": "John Doe",
+  "email": "john_doe@gmail.com",
+  "password": "password"
 }
 
 ###
