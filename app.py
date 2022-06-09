@@ -15,14 +15,29 @@ def get_connection():
     return conn
 
 
-@app.get("/")
-def Home():
-    conn = get_connection()
-    cur = conn.cursor()
-    cur.execute("SELECT 1 + 1")
-    result = cur.fetchone()
-    print("result: " + str(result))
-    return "Hello World!"
+@app.get("/api/users")
+def get_users():
+    return "getting users"
+
+
+@app.get("/api/users/<id>")
+def get_user(id):
+    return "getting user " + str(id)
+
+
+@app.post("/api/users")
+def create_user():
+    return "creating user"
+
+
+@app.delete("/api/users/<id>")
+def delete_user(id):
+    return "deleting user " + str(id)
+
+
+@app.put("/api/users/<id>")
+def update_user(id):
+    return "updating user " + str(id)
 
 
 if __name__ == "__main__":
