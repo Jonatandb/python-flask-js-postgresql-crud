@@ -23,7 +23,7 @@ Content-Type: application/json
 
 ###
 
-DELETE {{API_URL}}/users/1
+DELETE {{API_URL}}/users/6
 
 ###
 
