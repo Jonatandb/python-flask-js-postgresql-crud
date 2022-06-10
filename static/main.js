@@ -1,6 +1,8 @@
 const form = document.querySelector('#userForm')
 
 let users = []
+let editing = false
+let editingUserId = null
 
 window.addEventListener('DOMContentLoaded', async () => {
   const response = await fetch('/api/users')
@@ -15,20 +17,38 @@ form.addEventListener('submit', async e => {
   let email = form['email'].value
   let password = form['password'].value
 
-  const response = await fetch('/api/users', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      username,
-      email,
-      password,
-    }),
-  })
+  if (editing) {
+    const response = await fetch(`/api/users/${editingUserId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username,
+        email,
+        password,
+      }),
+    })
 
-  const data = await response.json()
-  users.unshift(data)
+    const updatedUser = await response.json()
+    users = users.map(user => (user.id === updatedUser.id ? updatedUser : user))
+    editing = false
+    editingUserId = null
+  } else {
+    const response = await fetch('/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username,
+        email,
+        password,
+      }),
+    })
+    const data = await response.json()
+    users.unshift(data)
+  }
   renderUsers(users)
   form.reset()
 })
@@ -59,6 +79,16 @@ function renderUsers(users) {
       const data = await response.json()
       users = users.filter(user => user.id !== data.id)
       renderUsers(users)
+    })
+
+    const btnEdit = userElement.querySelector('.btn-edit')
+    btnEdit.addEventListener('click', async () => {
+      const response = await fetch(`/api/users/${user.id}`)
+      const data = await response.json()
+      form['username'].value = data.username
+      form['email'].value = data.email
+      editing = true
+      editingUserId = user.id
     })
 
     list.append(userElement)
