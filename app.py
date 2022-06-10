@@ -1,15 +1,18 @@
 from flask import Flask, request, jsonify, send_file
 from psycopg2 import connect, extras
 from cryptography.fernet import Fernet
+from dotenv import load_dotenv
+from os import environ
+load_dotenv()
 
 app = Flask(__name__)
 key = Fernet.generate_key()
 
-host = "localhost"
-port = 5432
-dbname = "fazt-postgres-flask-crud"
-user = "postgres"
-password = "root"
+host = environ.get('DB_HOST')
+port = environ.get('DB_PORT')
+dbname = environ.get('DB_NAME')
+user = environ.get('DB_USER')
+password = environ.get('DB_PASSWORD')
 
 
 def get_connection():
