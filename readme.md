@@ -8,19 +8,19 @@ https://www.youtube.com/watch?v=Qqgry8mezC8
 
 ---
 
-## Open project with VSCode
+## Running project with VSCode
 
-### Select Python interpreter from VSCode:
+- Create .env file by copying the .env.example file
+- Open new integrated terminal and run:
+  - python -m virtualenv venv
+- Select Python interpreter from VSCode:
+  - F1 -> Python: Select Interpreter -> Enter interpreter path -> Select: venv\Scripts\python.exe
+- Open new integrated terminal and run:
 
-F1 -> Python: Select Interpreter -> Enter interpreter path -> Select: venv\Scripts\python.exe
+  - pip install -r requirements.txt
+  - python app.py
 
-### Open new integrated terminal and run:
-
-- python app.py
-
-  - Visit: http://127.0.0.1:5000
-
-  - (\* PostgreSQL must be installed and running)
+- Visit: http://localhost:5000 (\* PostgreSQL must be installed, must contain db with users table and must be running)
 
 ---
 
