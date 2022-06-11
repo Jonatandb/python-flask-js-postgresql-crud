@@ -14,7 +14,7 @@ https://www.youtube.com/watch?v=Qqgry8mezC8
 
 F1 -> Python: Select Interpreter -> Enter interpreter path -> Select: venv\Scripts\python.exe
 
-### Open new integration terminal and run:
+### Open new integrated terminal and run:
 
 - python app.py
 
