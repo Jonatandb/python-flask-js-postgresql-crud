@@ -8,7 +8,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   const response = await fetch('/api/users')
   const data = await response.json()
   users = data
-  renderUsers(users)
+  renderUsers()
 })
 
 form.addEventListener('submit', async e => {
@@ -49,11 +49,11 @@ form.addEventListener('submit', async e => {
     const data = await response.json()
     users.unshift(data)
   }
-  renderUsers(users)
+  renderUsers()
   form.reset()
 })
 
-function renderUsers(users) {
+function renderUsers() {
   const list = document.querySelector('#userList')
   list.innerHTML = ''
   users.forEach(user => {
@@ -78,7 +78,7 @@ function renderUsers(users) {
       })
       const data = await response.json()
       users = users.filter(user => user.id !== data.id)
-      renderUsers(users)
+      renderUsers()
     })
 
     const btnEdit = userElement.querySelector('.btn-edit')
